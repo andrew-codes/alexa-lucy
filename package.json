@@ -1,0 +1,37 @@
+{
+  "name": "@andrew-codes/smith-simms-family-alexa",
+  "version": "0.0.0",
+  "description": "Alexa apps for smith-simms family.",
+  "main": "src/index.js",
+  "scripts": {
+    "postinstall": "cd apps/jarvis && npm install && cd ./../../",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js",
+	"dev": "cross-env CONFIG=example.config.js NODE_ENV=dev nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andrew-codes/alexa-jarvis.git"
+  },
+  "keywords": [
+    "roomba",
+    "alexa",
+    "echo",
+    "home automation",
+    "automation",
+    "roowifi"
+  ],
+  "author": "Andrew Smith <andrew@andrew.codes>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/andrew-codes/alexa-jarvis/issues"
+  },
+  "homepage": "https://github.com/andrew-codes/alexa-jarvis#readme",
+  "dependencies": {
+    "alexa-app-server": "^2.3.1",
+    "nodemon": "^1.11.0"
+  },
+  "devDependencies": {
+    "cross-env": "^3.1.3"
+  }
+}

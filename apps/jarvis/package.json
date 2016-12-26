@@ -1,0 +1,31 @@
+{
+  "name": "@andrew-codes/alexa-jarvis",
+  "version": "0.0.0",
+  "description": "Home automation with Alexa.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andrew-codes/alexa-jarvis.git"
+  },
+  "keywords": [
+    "roomba",
+    "alexa",
+    "echo",
+    "home automation",
+    "automation",
+    "roowifi"
+  ],
+  "author": "Andrew Smith <andrew@andrew.codes>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/andrew-codes/alexa-jarvis/issues"
+  },
+  "homepage": "https://github.com/andrew-codes/alexa-jarvis#readme",
+  "dependencies": {
+    "alexa-app": "^2.3.4",
+    "axios": "^0.15.3"
+  }
+}
