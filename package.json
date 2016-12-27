@@ -6,8 +6,9 @@
   "scripts": {
     "postinstall": "cd apps/jarvis && npm install && cd ./../../",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js",
-    "dev": "cd src && nodemon server.js"
+    "build": "babel src --out-dir dist",
+    "prestart": "npm run build",
+    "start": "cd dist && nodemon server.js"
   },
   "repository": {
     "type": "git",
@@ -31,8 +32,14 @@
     "alexa-app": "^2.3.4",
     "alexa-app-server": "^2.3.1",
     "axios": "^0.15.3",
-    "nodemon": "^1.11.0"
+    "nodemon": "^1.11.0",
+    "react": "^15.4.1",
+    "react-dom": "^15.4.1"
   },
   "devDependencies": {
+    "babel-cli": "^6.18.0",
+    "babel-core": "^6.21.0",
+    "babel-preset-es2015": "^6.18.0",
+    "babel-preset-react": "^6.16.0"
   }
 }
