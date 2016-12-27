@@ -1,3 +1,7 @@
+module.exports.port = 8080;
+module.exports.httpsPort = 8443;
+module.exports.isProduction = false;
+
 // Name of the application/skill, which does not need to match the skills 'Invocation Name',
 // Defines both the Alexa-App-Server endpoint and the skills own name used in cards.
 module.exports.applicationName = 'Jarvis';

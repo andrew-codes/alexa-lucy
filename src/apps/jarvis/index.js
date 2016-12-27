@@ -1,7 +1,7 @@
 const alexa = require('alexa-app');
-const config = require('./config');
+const config = require('./../../config');
 const logger = require('./logger');
-const intents = require('./intents');
+const intents = require('./intents/index');
 
 const app = new alexa.app(config.applicationName);
 
@@ -25,7 +25,7 @@ app.pre = function(request, response, type) {
 
     log(`AWS ASK ${type} received: ${requestId}/${sessionId}`);
 
-    if (config.isDev) {
+    if (!config.isProduction) {
         return;
     }
 

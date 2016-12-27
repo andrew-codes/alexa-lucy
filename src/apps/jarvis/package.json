@@ -23,9 +23,5 @@
   "bugs": {
     "url": "https://github.com/andrew-codes/alexa-jarvis/issues"
   },
-  "homepage": "https://github.com/andrew-codes/alexa-jarvis#readme",
-  "dependencies": {
-    "alexa-app": "^2.3.4",
-    "axios": "^0.15.3"
-  }
+  "homepage": "https://github.com/andrew-codes/alexa-jarvis#readme"
 }

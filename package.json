@@ -7,7 +7,7 @@
     "postinstall": "cd apps/jarvis && npm install && cd ./../../",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon server.js",
-	"dev": "cross-env CONFIG=example.config.js NODE_ENV=dev nodemon server.js"
+    "dev": "cd src && nodemon server.js"
   },
   "repository": {
     "type": "git",
@@ -28,10 +28,11 @@
   },
   "homepage": "https://github.com/andrew-codes/alexa-jarvis#readme",
   "dependencies": {
+    "alexa-app": "^2.3.4",
     "alexa-app-server": "^2.3.1",
+    "axios": "^0.15.3",
     "nodemon": "^1.11.0"
   },
   "devDependencies": {
-    "cross-env": "^3.1.3"
   }
 }

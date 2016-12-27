@@ -38,3 +38,6 @@ jspm_packages
 .yarn-integrity
 
 sslcert
+env.list
+/config
+!/config/example.config.js
