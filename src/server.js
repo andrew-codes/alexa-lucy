@@ -6,7 +6,7 @@ const config = require('./config');
 let serverConfig = {
     server_root: __dirname,
     public_html: 'public',
-    app_dir: 'apps',
+    app_dir: 'alexa-apps',
     app_root: '/alexa/',
     port: config.port,
 };
