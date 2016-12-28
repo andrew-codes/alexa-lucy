@@ -1,5 +1,3 @@
-'use strict';
-
 const AlexaAppServer = require('alexa-app-server');
 const config = require('./config');
 
@@ -8,9 +6,10 @@ let serverConfig = {
     public_html: 'public',
     app_dir: 'alexa-apps',
     app_root: '/alexa/',
-    port: config.port,
+    port: 8080,
 };
 if (config.hasHttps) {
+    serverConfig.httpsPort = 8443;
     serverConfig.httpsEnabled = true;
     serverConfig.privateKey = config.sslKey;
     serverConfig.certificate = config.sslCert;
