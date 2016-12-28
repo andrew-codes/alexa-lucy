@@ -37,7 +37,6 @@ jspm_packages
 *.tgz
 .yarn-integrity
 
+/dist
 sslcert
-env.list
-/config
-!/config/example.config.js
+.env
