@@ -1,0 +1,19 @@
+version: "2"
+services:
+    web:
+        build: .
+        volumes:
+            - ./sslcert:/app/dist/sslcert
+        ports:
+            - "8080:8080"
+            - "8443:8443"
+        links:
+            - mongo
+    mongo:
+        image: mongo
+        ports:
+            - "27017:27017"
+    mongodata:
+        image: tianon/true
+        volumes:
+            - /data/db

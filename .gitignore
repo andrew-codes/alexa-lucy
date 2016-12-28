@@ -39,6 +39,4 @@ jspm_packages
 
 /dist
 sslcert
-env.list
-/config
-!/config/example.config.js
+.env

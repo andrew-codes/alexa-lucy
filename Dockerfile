@@ -1,16 +1,15 @@
 FROM node:boron
 
 # Create app directory
-RUN mkdir -p /usr/app/config
-RUN mkdir -p /usr/app/dist
-WORKDIR /usr/src
+RUN mkdir -p /app/dist
+WORKDIR /app
+
+# Copy over application code
+COPY package.json /app
+COPY ./dist /app/dist
 
 # Install app dependencies
-COPY package.json /usr/app
-RUN npm install
+RUN npm install --production
 
-# Copy over application code and example config
-COPY ./dist /usr/app/dist
-
-EXPOSE 80
+EXPOSE 8080 8443
 CMD [ "npm", "start" ]
