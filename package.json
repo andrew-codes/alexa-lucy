@@ -13,7 +13,7 @@
     "deployment/production/build": "npm run build/src && docker-compose build",
     "predeployment/production": "npm run deployment/production/build",
     "deployment/production": "docker-compose up",
-    "start/local": "cross-env NODE_ENV=development nodemon dev-server.js",
+    "start/local": "cross-env NODE_ENV=development nodemon dev/dev-server.js",
     "start/build": "docker-compose -f docker-compose.yml -f dev/dev.docker-compose.yml build",
     "start": "docker-compose -f docker-compose.yml -f dev/dev.docker-compose.yml up"
   },
