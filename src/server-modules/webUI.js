@@ -1,7 +1,7 @@
-const ReactDOMServer = require('react-dom/server');
-const Html = require('./../components/Html');
+import ReactDOMServer from 'react-dom/server';
+import Html from './../components/Html';
 
-module.exports = (express) => {
+export default (express) => {
     express.get('/', (req, res) => {
         res.send(ReactDOMServer.renderToStaticMarkup(Html('Jarvis Home', 'Hello world')));
     });

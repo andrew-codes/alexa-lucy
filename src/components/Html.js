@@ -1,6 +1,6 @@
 import React from 'react';
 
-module.exports = (title, body) => (
+export default (title, body) => (
     <html>
     <head>
         <title>{title}</title>

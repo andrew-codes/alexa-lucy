@@ -1,7 +1,8 @@
 const AlexaAppServer = require('alexa-app-server');
-const config = require('./config');
+import config from './config';
+import register from './server-modules';
 
-let serverConfig = {
+const serverConfig = {
     server_root: __dirname,
     public_html: 'public',
     app_dir: 'alexa-apps',
@@ -14,4 +15,7 @@ if (config.hasHttps) {
     serverConfig.privateKey = config.sslKey;
     serverConfig.certificate = config.sslCert;
 }
-AlexaAppServer.start(serverConfig);
+const server = AlexaAppServer.start(serverConfig);
+register(server.express);
+
+export default server;

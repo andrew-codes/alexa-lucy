@@ -1,22 +1,23 @@
-const path = require('path');
+import path from 'path';
 
 let userConfigFn;
 try {
-    userConfigFn = require(path.join(__dirname, process.env.CONFIG || ''));
+    userConfigFn = require(path.join(__dirname, '..', 'user.config.js')).default;
 }
 catch (exception) {
     userConfigFn = config => config;
 }
 
 const applicationName = 'Jarvis';
-let config = {
+const defaultConfig = {
     applicationName,
     greeting: `${applicationName}, at your service`,
     isProduction: process.env.NODE_ENV === 'production',
 };
-config = {
-    ...config,
-    ...userConfigFn(config)
+
+const config = {
+    ...defaultConfig,
+    ...userConfigFn(defaultConfig)
 };
 config.sslKey = path.join(__dirname, 'sslcert', process.env.SSL_KEY || '');
 config.sslCert = path.join(__dirname, 'sslcert', process.env.SSL_CERT || '');
@@ -24,4 +25,4 @@ config.hasHttps = Boolean(config.httpsPort)
     && Boolean(config.sslKey)
     && Boolean(config.sslCert);
 
-module.exports = Object.freeze(userConfigFn(config));
+export default config;

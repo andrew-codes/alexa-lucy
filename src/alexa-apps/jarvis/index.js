@@ -1,5 +1,5 @@
 const alexa = require('alexa-app');
-const config = require('./../../config');
+const config = require('./../../config').default;
 const logger = require('./logger');
 const intents = require('./intents/index');
 
