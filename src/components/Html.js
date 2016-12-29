@@ -7,6 +7,7 @@ export default (title, body) => (
     </head>
     <body>
     <div id="root">{body}</div>
+    <script src="/public/js/bundle.js" />
     </body>
     </html>
 );

@@ -12,5 +12,10 @@
         "react",
         "es2015",
         "stage-1"
-    ]
+    ],
+    "env": {
+        "plugins": [
+            "react-hot-loader/babel"
+        ]
+    }
 }
