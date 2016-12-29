@@ -3,7 +3,7 @@ services:
     webapp:
         build: .
         volumes:
-            - ./sslcert:/app/sslcert
+            - ./sslcert:/app/sslcert/
         ports:
             - "8080:8080"
             - "8443:8443"
@@ -11,13 +11,3 @@ services:
             - mongo
         depends_on:
             - mongo
-    mongo:
-        image: mongo
-        ports:
-            - "27017:27017"
-        depends_on:
-            - mongodata
-    mongodata:
-        image: tianon/true
-        volumes:
-            - /data/db

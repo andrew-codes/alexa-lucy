@@ -40,3 +40,4 @@ jspm_packages
 /dist
 sslcert
 .env
+/src/public/js/bundle.js
