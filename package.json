@@ -6,14 +6,16 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "rm -rf dist",
-    "prebuild": "npm run clean",
-    "build": "babel src --out-dir dist",
-    "postbuild": "cp src/alexa-apps/jarvis/package.json dist/alexa-apps/jarvis/package.json",
-    "predev": "npm run build",
-    "dev": "cd dist && node server.js",
-    "start": "cd dist && nodemon server.js",
-    "predocker:deployment": "npm run build && docker-compose build",
-    "docker:deployment": "docker-compose up"
+    "prebuild/src": "npm run clean",
+    "build/src": "babel src --out-dir dist",
+    "postbuild/src": "cp src/alexa-apps/jarvis/package.json dist/alexa-apps/jarvis/package.json",
+    "deployment/production/start": "cd dist && nodemon server.js",
+    "deployment/production/build": "npm run build/src && docker-compose build",
+    "predeployment/production": "npm run deployment/production/build",
+    "deployment/production": "docker-compose up",
+    "start/local": "cross-env NODE_ENV=development nodemon dev-server.js",
+    "start/build": "docker-compose -f docker-compose.yml -f dev/dev.docker-compose.yml build",
+    "start": "docker-compose -f docker-compose.yml -f dev/dev.docker-compose.yml up"
   },
   "repository": {
     "type": "git",
@@ -44,8 +46,15 @@
   "devDependencies": {
     "babel-cli": "^6.18.0",
     "babel-core": "^6.21.0",
+    "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.18.0",
+    "babel-plugin-transform-react-display-name": "^6.8.0",
+    "babel-plugin-transform-runtime": "^6.15.0",
     "babel-preset-es2015": "^6.18.0",
     "babel-preset-react": "^6.16.0",
-    "babel-preset-stage-1": "^6.16.0"
+    "babel-preset-stage-1": "^6.16.0",
+    "babel-register": "^6.18.0",
+    "babel-runtime": "^6.20.0",
+    "cross-env": "^3.1.3"
   }
 }
