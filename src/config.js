@@ -8,7 +8,7 @@ catch (exception) {
     userConfigFn = config => config;
 }
 
-const applicationName = 'Jarvis';
+const applicationName = 'Lucy';
 const defaultConfig = {
     applicationName,
     greeting: `${applicationName}, at your service`,

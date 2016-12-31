@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import AppBar from 'material-ui/AppBar';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import Paper from 'material-ui/Paper';
 import withWidth, {LARGE} from 'material-ui/utils/withWidth';
 import AppNavDrawer from './AppNavDrawer';
 
@@ -58,22 +59,35 @@ class App extends Component {
         });
     };
 
-    getStyles = () => ({});
+    getTitle = () => (
+        this.props.router.isActive('/roomba')
+            ? 'DJ Roomba'
+            : this.props.router.isActive('/about')
+                ? 'About'
+                : null
+    );
+
+    isNavDrawerOpen = () => this.props.width === LARGE && this.getTitle() !== null;
+
+    getStyles = () => ({
+        content: {
+            height: '100vh',
+            margin: this.isNavDrawerOpen() ? '-64px 0 0 200px' : '-64px 0 0 0',
+            padding: `${64+24}px 24px 24px 24px`,
+        }
+    });
 
     render() {
         const {
             location,
-            router,
-            width,
         } = this.props;
         let {
             navDrawerOpen,
         } = this.state;
+
         let showMenuIconButton = true;
-        const title =
-            router.isActive('/roomba') ? 'DJ Roomba' :
-                router.isActive('/about') ? 'About' : null;
-        if (width === LARGE && title !== null) {
+
+        if (this.isNavDrawerOpen()) {
             navDrawerOpen = true;
             showMenuIconButton = false;
         }
@@ -86,7 +100,7 @@ class App extends Component {
                     showMenuIconButton={showMenuIconButton}
                 />
                 <AppNavDrawer
-                    applicationName="Jarvis"
+                    applicationName="Lucy"
                     docked={true}
                     location={location}
                     open={navDrawerOpen}
@@ -94,7 +108,9 @@ class App extends Component {
                     onChangeList={this.handleChangeList}
                     onRequestChangeNavDrawer={this.handleChangeRequestNavDrawer}
                 />
-                {this.props.children}
+                <Paper style={styles.content}>
+                    {this.props.children}
+                </Paper>
             </div>
         );
     }

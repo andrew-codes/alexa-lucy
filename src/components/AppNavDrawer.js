@@ -34,7 +34,8 @@ class AppNavDrawer extends Component {
         logo: {
             cursor: 'pointer',
             fontSize: 24,
-            marginBottom: 8,
+            marginBottom: 6,
+            padding: 16
         },
     });
 

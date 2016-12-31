@@ -16,7 +16,7 @@ export default (express) => {
             } else if (redirectLocation) {
                 res.redirect(302, `${redirectLocation.pathname}${redirectLocation.search}`);
             } else if (renderProps) {
-                res.status(200).send(renderToStaticMarkup(Html('Jarvis', <RouterContext {...renderProps} />)));
+                res.status(200).send(renderToStaticMarkup(Html('Lucy', <RouterContext {...renderProps} />)));
             } else {
                 res.status(404).send('Not found');
             }
