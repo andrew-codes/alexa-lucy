@@ -1,23 +1,44 @@
 import React, {Component, PropTypes} from 'react';
-import {Step, Stepper, StepLabel, StepContent} from 'material-ui/Stepper';
 import Divider from 'material-ui/Divider';
 import FlatButton from 'material-ui/FlatButton';
-import {List, ListItem} from 'material-ui/List';
 import RaisedButton from 'material-ui/RaisedButton';
 import NetworkWifi from 'material-ui/svg-icons/device/network-wifi';
+import TextField from 'material-ui/TextField';
+import Toggle from 'material-ui/Toggle';
+import {List, ListItem} from 'material-ui/List';
+import {Step, Stepper, StepLabel, StepContent} from 'material-ui/Stepper';
 
 class Roomba extends Component {
-    static propTypes = {};
+    static propTypes = {
+        cleaningSpaces: PropTypes.arrayOf(PropTypes.string)
+    };
+    static defaultProps = {
+        cleaningSpaces: [
+            'kitchen',
+            'living room',
+            'downstairs'
+        ]
+    };
 
     state = {
-        stepIndex: 0
+        stepIndex: 0,
+        roombaName: '',
+        roombaAddress: '',
+        roombaCleaningSpaces: {},
+        roombas: []
     };
 
     handleNext = () => {
         const {stepIndex} = this.state;
+        let newStepIndex = stepIndex + 1;
+        const finished = stepIndex >= 2;
+        if (finished) {
+            this.saveRoomba();
+            newStepIndex = 0;
+        }
         this.setState({
-            stepIndex: stepIndex + 1,
-            finished: stepIndex >= 2,
+            stepIndex: newStepIndex,
+            finished,
         });
     };
 
@@ -28,13 +49,51 @@ class Roomba extends Component {
         }
     };
 
-    renderStepActions = (step) => {
+    newRoomba = () => {
+        const {stepIndex} = this.state;
+        this.setState({
+            stepIndex: stepIndex + 1,
+            roombaId: 'Roomba:NULL',
+            roombaName: '',
+            roombaAddress: '',
+            roombaCleaningSpaces: {}
+        });
+    };
+
+    updateRoomba = (field) => (evt, newValue) => this.setState({
+        [field]: newValue
+    });
+
+    toggleSpace = (space) => (evt, isChecked) => this.setState({
+        roombaCleaningSpaces: {
+            ...this.state.roombaCleaningSpaces,
+            [space]: isChecked
+        }
+    });
+
+    saveRoomba = () => {
+        this.setState({
+            roombas: this.state.roombas.concat([
+                {
+                    name: this.state.roombaName,
+                    address: this.state.roombaAddress,
+                    spaces: this.state.roombaCleaningSpaces
+                }
+            ])
+        })
+    };
+
+    selectedSpaces = () => Object.keys(this.state.roombaCleaningSpaces)
+        .filter((key) => this.state.roombaCleaningSpaces[key]);
+
+    renderStepActions = (isValid) => (step) => {
         const {stepIndex} = this.state;
 
         return (
             <div style={{margin: '12px 0'}}>
                 <RaisedButton
                     label={stepIndex === 2 ? 'Finish' : 'Next'}
+                    disabled={!isValid}
                     disableTouchRipple={true}
                     disableFocusRipple={true}
                     primary={true}
@@ -52,14 +111,30 @@ class Roomba extends Component {
                 )}
             </div>
         );
-    }
+    };
+
+    getStyles = () => ({
+        toggleContainer: {
+            maxWidth: 250
+        },
+        toggle: {
+            marginBottom: 16
+        }
+    });
 
     render() {
         const {
-            stepIndex
+            cleaningSpaces
+        } = this.props;
+        const {
+            stepIndex,
+            roombaName,
+            roombaAddress,
+            roombas
         } = this.state;
+        const styles = this.getStyles();
 
-        const hasRoombas = true;
+        const hasRoombas = roombas.length > 0;
         return (
             <div>
                 <header>
@@ -77,10 +152,13 @@ class Roomba extends Component {
                             </p>
                             {hasRoombas && [
                                 <List key="roomba-list">
-                                    <ListItem
-                                        primaryText="Roomba 1"
-                                        rightIcon={<NetworkWifi color="green" />}
-                                    />
+                                    {roombas.map((roomba, index) => (
+                                        <ListItem
+                                            key={index}
+                                            primaryText={`${roomba.name} (${roombaAddress})`}
+                                            rightIcon={<NetworkWifi color="green" />}
+                                        />
+                                    ))}
                                 </List>,
                                 <Divider
                                     key="roomba-list-divider"
@@ -93,26 +171,50 @@ class Roomba extends Component {
                                 disableFocusRipple={true}
                                 primary={true}
                                 style={{marginRight: 12}}
+                                onTouchTap={this.newRoomba}
                             />
                         </StepContent>
                     </Step>
                     <Step>
-                        <StepLabel>Create an ad group</StepLabel>
+                        <StepLabel>Roomba Name and Address</StepLabel>
                         <StepContent>
-                            <p>An ad group contains one or more ads which target a shared set of keywords.</p>
-                            {this.renderStepActions(1)}
+                            <p>Give your roomba an identifiable name and its IP address on your local network.</p>
+                            <TextField
+                                floatingLabelText="Roomba Name"
+                                fullWidth
+                                hintText="enter a uniquely identifiable name for your roomba"
+                                value={roombaName}
+                                onChange={this.updateRoomba('roombaName')}
+                            />
+                            <br />
+                            <TextField
+                                floatingLabelText="Roomba IP Address"
+                                fullWidth
+                                hintText="enter the IP address for your roomba"
+                                value={roombaAddress}
+                                onChange={this.updateRoomba('roombaAddress')}
+                            />
+                            {this.renderStepActions((this.state.roombaName !== '' && this.state.roombaAddress !== ''))(1)}
                         </StepContent>
                     </Step>
                     <Step>
-                        <StepLabel>Create an ad</StepLabel>
+                        <StepLabel>Cleaning spaces</StepLabel>
                         <StepContent>
                             <p>
-                                Try out different ad text to see what brings in the most customers,
-                                and learn how to enhance your ads using features like ad extensions.
-                                If you run into any problems with your ads, find out how to tell if
-                                they're running and how to resolve approval issues.
+                                Assign your roomba to one or more living spaces. Any associated roomba(s) will be
+                                directed to begin cleaning when telling Lucy to clean their associated living space.
                             </p>
-                            {this.renderStepActions(0)}
+                            <div style={styles.toggleContainer}>
+                                {cleaningSpaces.map((space, index) => (
+                                    <Toggle
+                                        label={space}
+                                        key={index}
+                                        style={styles.toggle}
+                                        onToggle={this.toggleSpace(space)}
+                                    />
+                                ))}
+                            </div>
+                            {this.renderStepActions(this.selectedSpaces().length > 0)(2)}
                         </StepContent>
                     </Step>
                 </Stepper>
