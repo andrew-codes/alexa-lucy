@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default (title, body) => (
+export default (title, body, initialState) => (
     <html>
     <head>
         <title>{title}</title>
@@ -8,6 +8,7 @@ export default (title, body) => (
     </head>
     <body style={{margin: 0}}>
     <div id="root">{body}</div>
+    <script dangerouslySetInnerHTML={{ __html: `window.__INITIAL_STATE__ = ${initialState};`}} />
     <script src="/public/js/bundle.js" />
     </body>
     </html>

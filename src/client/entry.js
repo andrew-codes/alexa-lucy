@@ -2,14 +2,21 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {AppContainer} from 'react-hot-loader';
+import {createStore} from 'redux';
+import {install, combineReducers} from 'redux-loop';
+import {ModuleProvider} from 'redux-modules';
 import Root from './Root';
 
 injectTapEventPlugin();
 
 const el = document.getElementById('root');
+const initialState = window.__INITIAL_STATE__ || {};
+const store = createStore(s => s, initialState, install());
 ReactDOM.render(
     <AppContainer>
-        <Root />
+        <ModuleProvider store={store} combineReducers={combineReducers}>
+            <Root />
+        </ModuleProvider>
     </AppContainer>,
     el
 );
