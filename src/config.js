@@ -11,6 +11,7 @@ catch (exception) {
 const applicationName = 'Lucy';
 const defaultConfig = {
     applicationName,
+    alexaAppRoot: '/alexa/',
     greeting: `${applicationName}, at your service`,
     isProduction: process.env.NODE_ENV === 'production',
 };

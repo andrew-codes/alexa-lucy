@@ -6,7 +6,7 @@ const serverConfig = {
     server_root: __dirname,
     public_html: 'public',
     app_dir: 'alexa-apps',
-    app_root: '/alexa/',
+    app_root: config.alexaAppRoot,
     port: 8080,
 };
 if (config.hasHttps) {
