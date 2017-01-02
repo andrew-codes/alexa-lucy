@@ -30,7 +30,8 @@ const create = {
                     address: '',
                     name: '',
                     oid,
-                    spaces: new List()
+                    spaces: new List(),
+                    isNew: true
                 }
             })
         };
@@ -71,7 +72,10 @@ const updateCleaningSpace = {
 const save = {
     reducer: (state, {payload}) => loop(
         state,
-        Effects.promise(roombaApi.save, state.roombas.filter((roomba) => !roomba.saved).toArray())
+        Effects.promise(roombaApi.save, state.roombas.filter((roomba) => !roomba.saved)
+            .toList()
+            .toJS()
+        )
     )
 };
 
@@ -98,25 +102,26 @@ const saveSuccess = {
         roombas: state.roombas.mergeDeep({
             [payload.oid]: {
                 ...state.roombas.get(payload.clientOid),
-                saved: true
+                saved: true,
+                isNew: false
             }
         }).remove(payload.clientOid)
     })
 };
 
-// Action when only some were successful. Payload has successful oid array, and failure array with oid: error message key value pair.
 const allSavedFailure = {
     payloadTypes: {
         saved: PropTypes.arrayOf(PropTypes.string),
-        failed: PropTypes.arrayOf(PropTypes.shape({
-            oid: PropTypes.string,
-            error: PropTypes.string
-        }))
+        failed: PropTypes.shape({
+            oids: PropTypes.arrayOf(PropTypes.string),
+            error: PropTypes.arrayOf(PropTypes.string),
+        })
     },
     reducer: (state, {payload}) => loop(
         {
             ...state,
-            error: new List(payload.failed)
+            roombas: state.roombas.filter((roomba) => payload.failed.oids.indexOf(roomba.oid) >= 0),
+            error: new List(payload.failed.messages)
         },
         Effects.batch(payload.saved.map(oid =>
             RoombaModule.actions.saveSuccess({oid})
