@@ -1,30 +1,49 @@
-import {arrayOf, shape, string} from 'react/PropTypes';
+import unique from 'uniqueid';
+import {PropTypes} from 'react';
 import {Effects, liftState, loop} from 'redux-loop';
 import {List, Map} from 'immutable';
 import {createModule} from 'redux-modules';
-import roombaApi from './../api/Roomba';
+import * as roombaApi from './../api/Roomba';
 
-// Module name
-// ---------------------------------
+const createId = unique('Roomba:', ':0');
+
 const name = 'Roomba';
 
-// Default state
-// ---------------------------------
 const defaultState = {
     errors: new List(),
-    roombas: new Map(),
-    saving: new Map()
+    roombas: new Map()
 };
 
-// Update a single roomba
-// ---------------------------------
+const init = (state) => ({
+    ...state,
+    roombas: new Map().mergeDeep(state.roombas)
+});
+
+const create = {
+    reducer: (state) => {
+        const oid = createId();
+        return {
+            ...state,
+            selectedRoomba: oid,
+            roombas: state.roombas.mergeDeep({
+                [oid]: {
+                    address: '',
+                    name: '',
+                    oid,
+                    spaces: new List()
+                }
+            })
+        };
+    }
+};
+
 const update = {
     payloadTypes: {
-        oid: string.isRequired
+        oid: PropTypes.string.isRequired
     },
     reducer: (state, {payload}) => ({
         ...state,
-        members: state.members.mergeDeep({
+        roombas: state.roombas.mergeDeep({
             [payload.oid]: {
                 ...payload,
                 saved: false
@@ -33,20 +52,31 @@ const update = {
     })
 };
 
-// Persist any unsaved roombas
-// ---------------------------------
+const updateCleaningSpace = {
+    payloadTypes: {
+        oid: PropTypes.string.isRequired,
+        space: PropTypes.bool.isRequired,
+    },
+    reducer: (state, {payload}) => ({
+        ...state,
+        roombas: state.roombas.updateIn([payload.oid, 'spaces'], (list) => {
+            if (payload.add) {
+                return list.push(payload.space);
+            }
+            return list.filter(item => item !== payload.space);
+        })
+    })
+};
+
 const save = {
     reducer: (state, {payload}) => loop(
         state,
         Effects.promise(roombaApi.save, state.roombas.filter((roomba) => !roomba.saved).toArray())
-            .then(RoombaModule.actions.allSavedSuccess)
-            .catch(RoombaModule.actions.allSavedFailure)
     )
 };
 
-// Action when all attempted saved members were successful.
 const allSavedSuccess = {
-    payloadTypes: arrayOf(string),
+    payloadTypes: PropTypes.arrayOf(PropTypes.string),
     reducer: (state, {payload}) => loop(
         {
             ...state,
@@ -58,28 +88,29 @@ const allSavedSuccess = {
     )
 };
 
-// Action handling a single member save.
 const saveSuccess = {
     payloadTypes: {
-        oid: string
+        clientOid: PropTypes.string,
+        oid: PropTypes.string,
     },
     reducer: (state, {payload}) => ({
         ...state,
-        members: state.members.mergeDeep({
+        roombas: state.roombas.mergeDeep({
             [payload.oid]: {
+                ...state.roombas.get(payload.clientOid),
                 saved: true
             }
-        })
+        }).remove(payload.clientOid)
     })
 };
 
 // Action when only some were successful. Payload has successful oid array, and failure array with oid: error message key value pair.
 const allSavedFailure = {
     payloadTypes: {
-        saved: arrayOf(string),
-        failed: arrayOf(shape({
-            oid: string,
-            error: string
+        saved: PropTypes.arrayOf(PropTypes.string),
+        failed: PropTypes.arrayOf(PropTypes.shape({
+            oid: PropTypes.string,
+            error: PropTypes.string
         }))
     },
     reducer: (state, {payload}) => loop(
@@ -98,12 +129,14 @@ const RoombaModule = createModule({
     defaultState,
     composes: [liftState],
     transformations: {
-        init: state => state,
+        allSavedFailure,
+        allSavedSuccess,
+        init,
+        create,
         save,
         update,
-        allSavedSuccess,
         saveSuccess,
-        allSavedFailure
+        updateCleaningSpace,
     }
 });
 

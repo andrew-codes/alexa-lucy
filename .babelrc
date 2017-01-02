@@ -3,9 +3,10 @@
         "node_modules"
     ],
     "plugins": [
+        "transform-decorators-legacy",
         "transform-es2015-modules-commonjs",
-        "transform-runtime",
         "add-module-exports",
+        "transform-runtime",
         "transform-react-display-name"
     ],
     "presets": [

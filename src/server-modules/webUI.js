@@ -4,9 +4,9 @@ import {install, combineReducers} from 'redux-loop';
 import {renderToStaticMarkup} from 'react-dom/server';
 import {match, RouterContext} from 'react-router';
 import {ModuleProvider} from 'redux-modules';
-import {alexaAppRoot} from './../config';
 import Html from './../components/Html';
 import routes from './../routes';
+import {alexaAppRoot} from './../config';
 import {unless} from './utils';
 
 export default (express) => {
@@ -21,7 +21,11 @@ export default (express) => {
             } else if (redirectLocation) {
                 res.redirect(302, `${redirectLocation.pathname}${redirectLocation.search}`);
             } else if (renderProps) {
-                const initialState = {};
+                const initialState = {
+                    Roomba: {
+                        roombas: {}
+                    }
+                };
                 const store = createStore(s => s, initialState, install());
                 res.status(200).send(renderToStaticMarkup(Html(
                     'Lucy', (
