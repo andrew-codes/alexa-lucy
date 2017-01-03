@@ -16,14 +16,10 @@ const defaultConfig = {
     isProduction: process.env.NODE_ENV === 'production',
 };
 
-const config = {
+export default {
     ...defaultConfig,
-    ...userConfigFn(defaultConfig)
+    ...userConfigFn(defaultConfig),
+    virtualPort: process.env.VIRTUAL_PORT,
+    dbHost: process.env.DB_HOST || 'localhost',
+    dbPort: process.env.DB_PORT || 27017,
 };
-config.sslKey = path.join(__dirname, 'sslcert', process.env.SSL_KEY || '');
-config.sslCert = path.join(__dirname, 'sslcert', process.env.SSL_CERT || '');
-config.hasHttps = Boolean(config.httpsPort)
-    && Boolean(config.sslKey)
-    && Boolean(config.sslCert);
-
-export default config;

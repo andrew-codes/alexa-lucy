@@ -1,7 +1,8 @@
 import Promise from 'bluebird';
 import {MongoClient} from 'mongodb';
-const mongoAddress = process.env.MONGO_PORT_27017_TCP_ADDR || 'localhost';
-const mongoPort = process.env.MONGO_PORT_27017_TCP_PORT || 27017;
+import {dbHost, dbPort} from './../config';
+const mongoAddress = dbHost;
+const mongoPort = dbPort;
 const connectionString = `mongodb://${mongoAddress}:${mongoPort}/lucy`;
 
 const getWithOid = (type) => (item) => ({
