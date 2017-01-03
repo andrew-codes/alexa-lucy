@@ -1,9 +1,9 @@
 import webUI from './webUI';
-import dataService from './dataService';
+import dataApi from './dataApi';
 
 export default (express) => {
     webUI(express);
-    dataService(express);
+    dataApi(express);
     express.use((err, req, res, next) => {
         console.error(err.stack);
         next(err)
