@@ -1,9 +1,7 @@
 import Promise from 'bluebird';
 import {MongoClient} from 'mongodb';
-import {dbHost, dbPort} from './../config';
-const mongoAddress = dbHost;
-const mongoPort = dbPort;
-const connectionString = `mongodb://${mongoAddress}:${mongoPort}/lucy`;
+import config from './../config';
+const connectionString = `mongodb://${config.dbHost}:${config.dbPort}/lucy`;
 
 const getWithOid = (type) => (item) => ({
     ...item,
