@@ -38,6 +38,5 @@ jspm_packages
 .yarn-integrity
 
 /dist
-sslcert
 .env
 /src/public/js/bundle.js
