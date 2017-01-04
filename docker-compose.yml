@@ -1,13 +1,59 @@
 version: "2"
 services:
+    nginx-proxy:
+      image: jwilder/nginx-proxy
+      ports:
+        - "80:80"
+        - "443:443"
+      volumes:
+        - /var/log/nginx
+        - /var/run/docker.sock:/tmp/docker.sock:ro
+      volumes_from:
+        - nginxdata
+
+    nginx-ssl:
+        image: jrcs/letsencrypt-nginx-proxy-companion
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock:ro
+            - /etc/nginx/certs
+        volumes_from:
+            - nginx-proxy
+            - nginxdata
+        depends_on:
+            - nginx-proxy
+
+    nginxdata:
+      image: alpine
+      command: "true"
+      volumes:
+        - /var/run/docker.sock:/var/run/docker.sock:ro
+        - /etc/nginx/conf.d
+        - /etc/nginx/vhost.d
+        - /etc/nginx/certs
+        - /etc/nginx/htpasswd
+        - /usr/share/nginx/html
+
     webapp:
         build: .
-        volumes:
-            - ./sslcert:/app/sslcert/
-        ports:
-            - "8080:8080"
-            - "8443:8443"
+        environment:
+            - VIRTUAL_HOST=lucy.smith-simms.family
+            - VIRTUAL_PORT=8080
+            - LETSENCRYPT_HOST=lucy.smith-simms.family
+            - LETSENCRYPT_EMAIL=andrew@andrew.codes
+            - LETSENCRYPT_TEST=true
+            - DB_HOST=mongo
+            - DB_PORT=27017
         links:
             - mongo
-        depends_on:
-            - mongo
+
+    mongo:
+        image: mongo
+        ports:
+            - "27017:27017"
+        volumes_from:
+            - mongodata
+
+    mongodata:
+        image: tianon/true
+        volumes:
+            - ./data/db:/data/db
