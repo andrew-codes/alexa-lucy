@@ -14,4 +14,4 @@ COPY src/public /app/dist/public
 RUN npm install --production
 
 EXPOSE 8080
-CMD [ "npm", "run", "deployment/production/start" ]
+CMD [ "npm", "run", "start/production" ]

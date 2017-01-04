@@ -1,5 +1,5 @@
 {
-  "name": "@andrew-codes/alexa-jarvis",
+  "name": "@andrew-codes/alexa-lucy",
   "version": "0.0.0",
   "description": "Home automation with Alexa.",
   "main": "index.js",
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/andrew-codes/alexa-jarvis.git"
+    "url": "git+https://github.com/andrew-codes/alexa-lucy.git"
   },
   "keywords": [
     "roomba",
@@ -21,7 +21,7 @@
   "author": "Andrew Smith <andrew@andrew.codes>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/andrew-codes/alexa-jarvis/issues"
+    "url": "https://github.com/andrew-codes/alexa-lucy/issues"
   },
-  "homepage": "https://github.com/andrew-codes/alexa-jarvis#readme"
+  "homepage": "https://github.com/andrew-codes/alexa-lucy#readme"
 }

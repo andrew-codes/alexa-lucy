@@ -5,26 +5,23 @@
   "description": "Alexa apps for smith-simms family.",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "clean": "npm run clean/client && npm run clean/server",
     "clean/client": "rm -f src/public/js/bundle.js",
     "clean/server": "rm -rf dist",
-    "build/src/server/alexa-apps": "cp src/alexa-apps/lucy/package.json dist/alexa-apps/lucy/package.json",
-    "prebuild/src/server": "npm run clean/server",
-    "build/src/server": "babel src --out-dir dist",
-    "postbuild/src/server": "npm run build/src/server/alexa-apps",
-    "prebuild/src/client": "npm run clean/client",
-    "build/src/client": "webpack",
-    "build/src": "npm run build/src/client && npm run build/src/server",
-    "deployment/production/start": "cd dist && NODE_ENV=production nodemon server.js",
-    "deployment/production/build": "npm run build/src && docker-compose -f docker-compose-nginx.yml -f docker-compose.yml -f docker-compose-mongo.yml build",
-    "predeployment/production": "npm run deployment/production/build",
-    "deployment/production": "docker-compose up",
-    "start": "cross-env NODE_ENV=development node dev/dev-server.js",
-    "start/db/build": "docker-compose -f docker-compose-mongo.yml build",
-    "start/db": "docker-compose -f docker-compose-mongo.yml up"
+    "build/server/alexa-apps": "cp src/alexa-apps/lucy/package.json dist/alexa-apps/lucy/package.json",
+    "prebuild/server": "npm run clean/server",
+    "build/server": "babel src --out-dir dist",
+    "postbuild/server": "npm run build/server/alexa-apps",
+    "prebuild/client": "npm run clean/client",
+    "build/client": "webpack",
+    "build": "npm run build/client && npm run build/server",
+    "start/production": "cd dist && NODE_ENV=production nodemon server.js",
+    "start": "cross-env NODE_ENV=development VIRTUAL_PORT=8080 node dev/dev-server.js",
+    "start/db": "docker-compose -f dev/docker-compose.yml up -d"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/andrew-codes/alexa-jarvis.git"
+    "url": "git+https://github.com/andrew-codes/alexa-lucy.git"
   },
   "keywords": [
     "roomba",
@@ -37,9 +34,9 @@
   "author": "Andrew Smith <andrew@andrew.codes>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/andrew-codes/alexa-jarvis/issues"
+    "url": "https://github.com/andrew-codes/alexa-lucy/issues"
   },
-  "homepage": "https://github.com/andrew-codes/alexa-jarvis#readme",
+  "homepage": "https://github.com/andrew-codes/alexa-lucy#readme",
   "dependencies": {
     "alexa-app": "^2.3.4",
     "alexa-app-server": "^2.3.1",
