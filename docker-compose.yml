@@ -21,6 +21,7 @@ services:
             - nginxdata
         depends_on:
             - nginx-proxy
+            - webapp
 
     nginxdata:
       image: alpine
@@ -45,6 +46,8 @@ services:
             - DB_PORT=27017
         links:
             - mongo
+        depends_on:
+            - nginx-proxy
 
     mongo:
         image: mongo
