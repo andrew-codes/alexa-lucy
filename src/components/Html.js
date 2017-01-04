@@ -9,7 +9,7 @@ export default (title, body, initialState) => (
     <body style={{margin: 0}}>
     <div id="root">{body}</div>
     <script dangerouslySetInnerHTML={{ __html: `window.__INITIAL_STATE__ = ${initialState};`}} />
-    <script src="/public/js/bundle.js" />
+    <script src="/js/bundle.js" />
     </body>
     </html>
 );

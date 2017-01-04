@@ -8,7 +8,7 @@ module.exports = {
     output: {
         path: path.join(__dirname, 'src', 'public', 'js'),
         filename: 'bundle.js',
-        publicPath: '/public/js/'
+        publicPath: '/js/'
     },
     plugins: [
     ],

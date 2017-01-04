@@ -12,7 +12,7 @@ import {unless} from './utils';
 
 export default (express) => {
     express.use(unless([
-        /^\/public\/.*/,
+        /^\/js\/.*/,
         new RegExp(`${alexaAppRoot}.*`),
         /__.*/,
     ], (req, res) => {
